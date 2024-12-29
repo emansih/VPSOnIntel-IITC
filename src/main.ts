@@ -11,6 +11,8 @@
 // @grant          none
 // ==/UserScript==
 
+import { IntelResponse } from "./IntelResponse";
+
 
 declare var map: any; // IITC map object
 declare function addHook(eventName: string, callback: (...args: any[]) => void): void;
@@ -60,10 +62,10 @@ function wrapper(plugin_info: any) {
                 body: JSON.stringify(requestData),
             });
 
-            const overClockResponse = await response.json();
-
+            const intelResponse = await response.json() as IntelResponse[];
+            
             portalsInViewport.forEach((port) => {
-                overClockResponse.forEach((counter: { lat: number; lng: number }) => {
+                intelResponse.forEach((counter: { lat: number; lng: number }) => {
                     if (port._latlng.lat === counter.lat && port._latlng.lng === counter.lng) {
                         port.setStyle({ fillColor: "#040500", fillOpacity: 0.75 });
                     }
