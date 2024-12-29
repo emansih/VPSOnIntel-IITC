@@ -12,6 +12,7 @@
 // ==/UserScript==
 
 import { IntelResponse } from "./IntelResponse";
+import * as L from "leaflet";
 
 
 declare var map: any; // IITC map object
@@ -33,8 +34,6 @@ function wrapper(plugin_info: any) {
 
     window.plugin.highlightPortals = function (): void {
         const bounds = map.getBounds();
-        portalsInViewport = [];
-
         Object.values(window.portals).forEach((portal: any) => {
             const latLng = portal._latlng;
             if (bounds.contains(latLng)) {
@@ -62,6 +61,10 @@ function wrapper(plugin_info: any) {
                 body: JSON.stringify(requestData),
             });
 
+            if (!response.ok) {
+                throw new Error(`Unable to get POI status`);
+            }
+    
             const intelResponse = await response.json() as IntelResponse[];
             
             portalsInViewport.forEach((port) => {
