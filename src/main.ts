@@ -31,7 +31,6 @@ function wrapper(plugin_info: any) {
 
     window.plugin.highlightPortals = function (): void {
         const bounds = map.getBounds();
-        portalsInViewport = [];
 
         Object.values(window.portals).forEach((portal: any) => {
             const latLng = portal._latlng;
@@ -61,14 +60,14 @@ function wrapper(plugin_info: any) {
             });
 
             const overClockResponse = await response.json();
-
-            portalsInViewport.forEach((port) => {
-                overClockResponse.forEach((counter: { id: string }) => {
-                    if (port.options.guid === counter.id) {
-                        port.setStyle({ fillColor: "#040500", fillOpacity: 0.75 });
-                    }
-                });
-            });
+            const intersectPortal = portalsInViewport.filter((item1) =>
+                overClockResponse.some((item2: { id: string; }) => item2.id === item1.options.guid)
+            );
+              
+            intersectPortal.map((portal: { setStyle: (arg0: { fillColor: string; fillOpacity: number; }) => void; }) => {
+                portal.setStyle({ fillColor: "#040500", fillOpacity: 0.75 });
+            })
+            
         } catch (error) {
             console.error("Error syncing overclocked portals:", error);
         }
