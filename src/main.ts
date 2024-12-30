@@ -63,8 +63,8 @@ function wrapper(plugin_info: any) {
             const overClockResponse = await response.json();
 
             portalsInViewport.forEach((port) => {
-                overClockResponse.forEach((counter: { lat: number; lng: number }) => {
-                    if (port._latlng.lat === counter.lat && port._latlng.lng === counter.lng) {
+                overClockResponse.forEach((counter: { id: string }) => {
+                    if (port.options.guid === counter.id) {
                         port.setStyle({ fillColor: "#040500", fillOpacity: 0.75 });
                     }
                 });
