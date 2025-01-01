@@ -88,8 +88,9 @@ function wrapper(plugin_info: any) {
     if (window.iitcLoaded && typeof setup === "function") setup();
 }
 
-const script = document.createElement("script");
-const info: any = {};
+// Needs to be var instead of const otherwise mobile IITC will throw an exception
+var script = document.createElement("script");
+var info: any = {};
 
 if (typeof GM_info !== "undefined" && GM_info && GM_info.script) {
     info.script = {
