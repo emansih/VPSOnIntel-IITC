@@ -2,7 +2,10 @@
 
 The IITC plugin to interact with https://github.com/emansih/VpsOnIntel-backend
 
-The plugin highlights portals that have overclock enabled on intel map. 
+The plugin highlights portals that have overclock enabled on intel map. Script downloads can be found here: https://github.com/emansih/VPSOnIntel-IITC/releases/latest
+
+Click on `VpsOnIntel.user.js` to download the file. 
+
 
 ## Build
 
