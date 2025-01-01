@@ -45,7 +45,7 @@ function wrapper(plugin_info: any) {
 			fillOpacity: 0.85,
 			lineCap: "butt",
 		},
-        hasOwn: { fillColor: "#ef0069" }
+        hasOwn: { fillColor: "#ECC000" }
 	};
 
 
@@ -79,7 +79,7 @@ function wrapper(plugin_info: any) {
                         {},
                         styles.common,
                         styles.hasOwn,
-                        { dashArray: makeDashArray(window.portalMarkerScale(), 70, 30) }
+                        { dashArray: makeDashArray(window.portalMarkerScale(), 4, 4) }
                     )
                 );
         
@@ -113,15 +113,13 @@ function wrapper(plugin_info: any) {
         const LEVEL_TO_RADIUS = [7, 7, 7, 7, 8, 8, 9, 10, 11];
         const circ = LEVEL_TO_RADIUS[level] * 6.3 * scale;
         const unit = circ / dashes / 3;
-        const da = (dashArrayMemo[cacheKeyStr] = `${unit * 2}, ${unit}`) as string;
-        console.log(da)
+        const da = (dashArrayMemo[cacheKeyStr] = `${unit * 2}, ${unit}`);
         return da;
       }
       
     function setup(): void {
         addHook("mapDataRefreshStart", window.plugin.syncOCPortal);
         addHook("mapDataRefreshEnd", window.plugin.highlightPortals);
-
         window.plugin.highlightOCPortals.highlightOC = new L.LayerGroup();
         window.addLayerGroup("Overclocked Enabled", window.plugin.highlightOCPortals.highlightOC, true);
     }
