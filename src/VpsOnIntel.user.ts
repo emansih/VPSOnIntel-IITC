@@ -3,7 +3,7 @@
 // @name           Highlight overclocked portals
 // @author         hisname
 // @category       Highlighter
-// @version        1.0.2
+// @version        1.0.3
 // @description    Highlight OC portals on Intel map
 // @match          *://intel.ingress.com/*
 // @match          *://intel-x.ingress.com/*
