@@ -7,5 +7,6 @@ declare global {
         iitcLoaded: boolean;
         portals: Record<string, any>;
         addLayerGroup(name: string, layerGroup: any, defaultDisplay: boolean): void;
+        portalMarkerScale(): number;
     }
 }

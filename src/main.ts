@@ -40,6 +40,15 @@ function wrapper(plugin_info: any) {
         });
     };
 
+    const styles = {
+		common: {
+			fillOpacity: 0.85,
+			lineCap: "butt",
+		},
+        hasOwn: { fillColor: "#ef0069" }
+	};
+
+
     window.plugin.syncOCPortal = async function (): Promise<void> {
         const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -64,8 +73,17 @@ function wrapper(plugin_info: any) {
                 overClockResponse.some((item2: { id: string; }) => item2.id === item1.options.guid)
             );
               
-            intersectPortal.map((portal: { setStyle: (arg0: { fillColor: string; fillOpacity: number; }) => void; }) => {
-                portal.setStyle({ fillColor: "#040500", fillOpacity: 0.75 });
+            intersectPortal.map((portal: {bringToFront(): unknown; setStyle: (arg0: { fillColor: string; fillOpacity: number; }) => void; }) => {
+                portal.setStyle(
+                    L.extend(
+                        {},
+                        styles.common,
+                        styles.hasOwn,
+                        { dashArray: makeDashArray(window.portalMarkerScale(), 70, 30) }
+                    )
+                );
+        
+                portal.bringToFront();        
             })
             
         } catch (error) {
@@ -73,6 +91,33 @@ function wrapper(plugin_info: any) {
         }
     };
 
+    let dashArrayMemo: {
+        scale: number;
+        [key: string]: string | number;
+      } = {
+        scale: -1,
+      };
+      
+      function makeDashArray(scale: number, dashes: number, level: number): string {
+        const cacheKey = level < 7 ? -dashes : dashes;
+        const cacheKeyStr = cacheKey.toString(); 
+      
+        if (dashArrayMemo.scale === scale) {
+          if (cacheKeyStr in dashArrayMemo) {
+            return dashArrayMemo[cacheKeyStr].toString();
+          }
+        } else {
+          dashArrayMemo = { scale };
+        }
+      
+        const LEVEL_TO_RADIUS = [7, 7, 7, 7, 8, 8, 9, 10, 11];
+        const circ = LEVEL_TO_RADIUS[level] * 6.3 * scale;
+        const unit = circ / dashes / 3;
+        const da = (dashArrayMemo[cacheKeyStr] = `${unit * 2}, ${unit}`) as string;
+        console.log(da)
+        return da;
+      }
+      
     function setup(): void {
         addHook("mapDataRefreshStart", window.plugin.syncOCPortal);
         addHook("mapDataRefreshEnd", window.plugin.highlightPortals);
